@@ -1,4 +1,0 @@
-cron:
-- description: daily artists update
-  url: /tasks/artists
-  schedule: every 24 hours
