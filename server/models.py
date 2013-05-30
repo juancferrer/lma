@@ -1,12 +1,19 @@
-import datetime
-from google.appengine.ext import db
+from google.appengine.ext import ndb
+from messages import *
 
 
-class Artist(db.Model):
-    name = db.StringProperty(required=True)
-    image_url = db.StringProperty()
-    show_count = db.IntegerProperty(required=True)
+class Images(ndb.Model):
+    kind = ndb.StringProperty(required=True, choices=['icon', 'large'])
+    url = ndb.StringProperty(required=True)
+
+
+class Artist(ndb.Model):
+    name = ndb.StringProperty(required=True)
+    images = ndb.StructuredProperty(Images, repeated=True)
+    show_count = ndb.IntegerProperty(required=True)
 
     def to_dict(self,):
-        return {'name': self.name, 'image': self.image_url,
-                'shows': self.show_count}
+        return {'name': self.name, 'shows': self.show_count}
+    
+    def to_message(self,):
+        return ArtistResponse(name=self.name, show_count=self.show_count)

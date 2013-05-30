@@ -10,7 +10,7 @@ from django.utils.encoding import smart_unicode
 
 
 from BeautifulSoup import BeautifulSoup
-from models import Artist
+from .models import Artist
 
 ARTISTS_URL = 'http://www.archive.org/browse.php?collection=etree&field=%2Fmetadata%2Fcreator'
 
@@ -42,7 +42,8 @@ def fetch_data():
         artist.put()
         #taskqueue.add(url='/task/scrape/artist/create', 
         #        params={'key':key, 'name':name, 'show_count':shows}) 
-    deferred.defer(update_cache)
+    # Skip updating cache for now
+    # deferred.defer(update_cache)
 
 
 class ScrapeData(webapp2.RequestHandler):
