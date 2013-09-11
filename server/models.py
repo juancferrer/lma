@@ -1,4 +1,6 @@
 from google.appengine.ext import ndb
+from django.template.defaultfilters import slugify
+
 from messages import *
 
 
@@ -11,6 +13,9 @@ class Artist(ndb.Model):
     name = ndb.StringProperty(required=True)
     images = ndb.StructuredProperty(Images, repeated=True)
     show_count = ndb.IntegerProperty(required=True)
+
+    def _pre_put_hook(self,):
+        self.key = ndb.Key(self.__class__, slugify(self.name))
 
     def to_dict(self,):
         return {'name': self.name, 'shows': self.show_count}
