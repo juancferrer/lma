@@ -5,9 +5,6 @@ api_version: 1
 threadsafe: true
 
 handlers:
-- url: /artists
-  script: artists.app
-
 - url: /task/scrape/artist/
   script: scrape_artists.app
   login: admin
@@ -17,7 +14,7 @@ handlers:
 
 libraries:
 - name: django
-  version: "1.2"
+  version: "1.4"
 
 builtins:
 - deferred: on
