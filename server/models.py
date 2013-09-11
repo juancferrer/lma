@@ -1,7 +1,7 @@
 from google.appengine.ext import ndb
-from django.template.defaultfilters import slugify
 
 from messages import *
+from utils import slugify
 
 
 class Images(ndb.Model):
