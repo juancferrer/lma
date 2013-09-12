@@ -16,5 +16,5 @@ class Music(remote.Service):
                       name='music.artists')
     def artists(self, request):
         '''API endpoint to query for artists'''
-        artists = [artist.to_message() for artist in Artist.query()]
+        artists = [artist.to_message() for artist in Artist.query().order(+Artist.key)]
         return ArtistsResponse(artists=artists)
