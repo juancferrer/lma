@@ -78,16 +78,18 @@ public class Library extends FragmentActivity implements ActionBar.TabListener {
         }
 
 
-        // Configure the SlidingMenu
+        // configure the SlidingMenu
         SlidingMenu menu = new SlidingMenu(this);
         menu.setMode(SlidingMenu.LEFT);
-        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
         menu.setShadowWidthRes(R.dimen.shadow_width);
         menu.setShadowDrawable(R.drawable.shadow);
         menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
         menu.setFadeDegree(0.35f);
         menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
         menu.setMenu(R.layout.sliding_menu);
+        menu.setContent(mViewPager);
+
     }
 
     @Override
