@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">LiveMusicArchive</string>
+    <string name="app_name">Live Music Archive</string>
     <string name="action_settings">Settings</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
@@ -9,4 +9,11 @@
     <string name="drawer_open">Drawer open</string>
     <string name="drawer_close">Drawer close</string>
 
+    <string name="library_string">My Library</string>
+    <string name="playlist_string">Playlists</string>
+
+    <string-array name="drawer_strings">
+       <item>@string/library_string</item>
+        <item>@string/playlist_string</item>
+    </string-array>
 </resources>
