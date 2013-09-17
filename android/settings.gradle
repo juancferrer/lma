@@ -1,1 +1,1 @@
-include ':LiveMusicArchive'
+include ':LiveMusicArchive', ':libraries:PagerSlidingTabStrip:library'
