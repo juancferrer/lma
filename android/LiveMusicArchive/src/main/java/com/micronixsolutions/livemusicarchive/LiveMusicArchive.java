@@ -4,7 +4,9 @@ import android.app.ActionBar;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
@@ -33,17 +35,10 @@ public class LiveMusicArchive extends FragmentActivity {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
 
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                //When the drawer is closed, always use the current section on the drawer as the title
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 //When the drawer is open, always use the app name as the title
                 actionBar.setTitle(R.string.app_name);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
 
@@ -77,20 +72,8 @@ public class LiveMusicArchive extends FragmentActivity {
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, R.id.drawer_item, getResources().getStringArray(R.array.drawer_strings)));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        mDrawerList.setItemChecked(0, true); // Activate the first item on the drawer
+        selectFragment(0); // Load the first app section (library)
     }
-
-    /* Called whenever we call invalidateOptionsMenu() */
-    /*
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav drawer is open, hide action items related to the content view
-        //boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        //menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
-    }
-    */
-
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -117,14 +100,34 @@ public class LiveMusicArchive extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.live_music_archive, menu);
-        return true;
+    /** Swaps fragments in the main content view */
+    private void selectFragment(int position) {
+        Fragment fragment;
+        switch (position){
+            case 0:
+                fragment = new LibraryFragment();
+                break;
+            case 1:
+                fragment = new PlaylistFragment();
+                break;
+            default:
+                fragment = new LibraryFragment();
+                break;
+        }
+        Bundle args = new Bundle();
+        //args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
+        fragment.setArguments(args);
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame, fragment)
+                .commit();
+        // Highlight the selected item, update the title, and close the drawer
+        mDrawerList.setItemChecked(position, true);
+        getActionBar().setTitle(getResources().getStringArray(R.array.drawer_strings)[position]);
+        mDrawerLayout.closeDrawer(mDrawerList);
     }
-    */
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -197,29 +200,9 @@ public class LiveMusicArchive extends FragmentActivity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
-            selectItem(position);
+            selectFragment(position);
         }
     }
 
-    /** Swaps fragments in the main content view */
-    private void selectItem(int position) {
-        // Create a new fragment and specify the planet to show based on position
-        /*
-        Fragment fragment = new PlanetFragment();
-        Bundle args = new Bundle();
-        args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
-        fragment.setArguments(args);
-
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, fragment)
-                .commit();
-        */
-        // Highlight the selected item, update the title, and close the drawer
-        mDrawerList.setItemChecked(position, true);
-        getActionBar().setTitle(getResources().getStringArray(R.array.drawer_strings)[position]);
-        mDrawerLayout.closeDrawer(mDrawerList);
-    }
 
 }
