@@ -35,6 +35,12 @@ public class LiveMusicArchive extends FragmentActivity {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
 
+            public void onDrawerClosed(View drawerView){
+                // Maybe they didn't click anything in the drawer
+                // Make sure to set the title back to the currently selected section
+                actionBar.setTitle(getResources().getStringArray(R.array.drawer_strings)[mDrawerList.getCheckedItemPosition()]);
+            }
+
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 //When the drawer is open, always use the app name as the title
