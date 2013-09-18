@@ -18,6 +18,7 @@ public class PlaylistFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getActivity().getActionBar().setTitle(getResources().getString(R.string.playlist_string));
         return inflater.inflate(R.layout.playlist_fragment, container, false);
     }
 
