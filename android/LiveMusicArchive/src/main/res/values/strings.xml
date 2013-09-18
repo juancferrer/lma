@@ -9,11 +9,23 @@
     <string name="drawer_open">Drawer open</string>
     <string name="drawer_close">Drawer close</string>
 
+
     <string name="library_string">My Library</string>
     <string name="playlist_string">Playlists</string>
-
     <string-array name="drawer_strings">
        <item>@string/library_string</item>
         <item>@string/playlist_string</item>
+    </string-array>
+
+
+    <string name="library_genres_tab_string">genres</string>
+    <string name="library_artists_tab_string">artists</string>
+    <string name="library_shows_tab_string">shows</string>
+    <string name="library_songs_tab_string">songs</string>
+    <string-array name="library_tab_strings">
+        <item>@string/library_genres_tab_string</item>
+        <item>@string/library_artists_tab_string</item>
+        <item>@string/library_shows_tab_string</item>
+        <item>@string/library_songs_tab_string</item>
     </string-array>
 </resources>

@@ -37,7 +37,7 @@ public class LiveMusicArchive extends FragmentActivity {
 
             public void onDrawerClosed(View drawerView){
                 // Maybe they didn't click anything in the drawer
-                // Make sure to set the title back to the currently selected section
+                // Make sure the title is set back to the app section name even if they didn't click on the drawer
                 actionBar.setTitle(getResources().getStringArray(R.array.drawer_strings)[mDrawerList.getCheckedItemPosition()]);
             }
 
@@ -141,6 +141,7 @@ public class LiveMusicArchive extends FragmentActivity {
      */
     /*
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
