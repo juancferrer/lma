@@ -15,11 +15,12 @@
         android:layout_below="@+id/library_tabs"
         android:layout_alignParentLeft="true" />
 
+    <!--
     <GridView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/artists_grid_view"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true" />
-
+    -->
 </RelativeLayout>
