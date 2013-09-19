@@ -16,7 +16,7 @@
  * Modify at your own risk.
  */
 
-package com.micronixsolutions.livemusicarchive.api;
+package com.micronixsolutions.api.music;
 
 /**
  * Music request.

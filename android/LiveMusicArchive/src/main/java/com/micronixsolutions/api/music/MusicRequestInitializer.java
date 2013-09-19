@@ -16,7 +16,7 @@
  * Modify at your own risk.
  */
 
-package com.micronixsolutions.livemusicarchive.api;
+package com.micronixsolutions.api.music;
 
 /**
  * Music request initializer for setting properties like key and userIp.
@@ -79,6 +79,7 @@ package com.micronixsolutions.livemusicarchive.api;
  *
  * @since 1.12
  */
+
 public class MusicRequestInitializer extends com.google.api.client.googleapis.services.json.CommonGoogleJsonClientRequestInitializer {
 
   public MusicRequestInitializer() {

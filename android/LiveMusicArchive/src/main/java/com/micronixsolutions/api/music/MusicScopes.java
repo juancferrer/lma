@@ -16,7 +16,7 @@
  * Modify at your own risk.
  */
 
-package com.micronixsolutions.livemusicarchive.api;
+package com.micronixsolutions.api.music;
 
 /**
  * Available OAuth 2.0 scopes for use with the music.

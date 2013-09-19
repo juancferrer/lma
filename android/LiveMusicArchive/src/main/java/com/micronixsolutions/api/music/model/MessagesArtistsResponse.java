@@ -16,10 +16,10 @@
  * Modify at your own risk.
  */
 
-package com.micronixsolutions.livemusicarchive.api.model;
+package com.micronixsolutions.api.music.model;
 
 /**
- * Model definition for MessagesArtistResponse.
+ * Model definition for MessagesArtistsResponse.
  *
  * <p> This is the Java data model class that specifies how to parse/serialize into the JSON that is
  * transmitted over HTTP when working with the music. For a detailed explanation see:
@@ -29,58 +29,43 @@ package com.micronixsolutions.livemusicarchive.api.model;
  * @author Google, Inc.
  */
 @SuppressWarnings("javadoc")
-public final class MessagesArtistResponse extends com.google.api.client.json.GenericJson {
+public final class MessagesArtistsResponse extends com.google.api.client.json.GenericJson {
 
   /**
    * The value may be {@code null}.
    */
   @com.google.api.client.util.Key
-  private java.lang.String name;
+  private java.util.List<MessagesArtistResponse> artists;
 
-  /**
-   * The value may be {@code null}.
-   */
-  @com.google.api.client.util.Key("show_count") @com.google.api.client.json.JsonString
-  private java.lang.Long showCount;
-
-  /**
-   * @return value or {@code null} for none
-   */
-  public java.lang.String getName() {
-    return name;
-  }
-
-  /**
-   * @param name name or {@code null} for none
-   */
-  public MessagesArtistResponse setName(java.lang.String name) {
-    this.name = name;
-    return this;
+  static {
+    // hack to force ProGuard to consider MessagesArtistResponse used, since otherwise it would be stripped out
+    // see http://code.google.com/p/google-api-java-client/issues/detail?id=528
+    com.google.api.client.util.Data.nullOf(MessagesArtistResponse.class);
   }
 
   /**
    * @return value or {@code null} for none
    */
-  public java.lang.Long getShowCount() {
-    return showCount;
+  public java.util.List<MessagesArtistResponse> getArtists() {
+    return artists;
   }
 
   /**
-   * @param showCount showCount or {@code null} for none
+   * @param artists artists or {@code null} for none
    */
-  public MessagesArtistResponse setShowCount(java.lang.Long showCount) {
-    this.showCount = showCount;
+  public MessagesArtistsResponse setArtists(java.util.List<MessagesArtistResponse> artists) {
+    this.artists = artists;
     return this;
   }
 
   @Override
-  public MessagesArtistResponse set(String fieldName, Object value) {
-    return (MessagesArtistResponse) super.set(fieldName, value);
+  public MessagesArtistsResponse set(String fieldName, Object value) {
+    return (MessagesArtistsResponse) super.set(fieldName, value);
   }
 
   @Override
-  public MessagesArtistResponse clone() {
-    return (MessagesArtistResponse) super.clone();
+  public MessagesArtistsResponse clone() {
+    return (MessagesArtistsResponse) super.clone();
   }
 
 }
