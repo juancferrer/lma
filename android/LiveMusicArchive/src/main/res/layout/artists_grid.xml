@@ -7,11 +7,14 @@
     <GridView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:columnWidth="192dp"
+        android:columnWidth="160dp"
+        android:paddingRight="24dp"
         android:id="@+id/artists_grid_view"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:numColumns="auto_fit"
+        android:fastScrollAlwaysVisible="true"
+        android:background="@color/drawer_activated_color"
         android:fastScrollEnabled="true" />
 
 </FrameLayout>
