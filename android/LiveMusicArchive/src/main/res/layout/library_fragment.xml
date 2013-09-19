@@ -6,7 +6,7 @@
     <com.astuetz.viewpager.extensions.PagerSlidingTabStrip
         android:id="@+id/library_tabs"
         android:layout_width="match_parent"
-        android:layout_height="48dip" />
+        android:layout_height="@dimen/tabs_height" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/library_pager"
