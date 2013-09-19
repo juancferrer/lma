@@ -33,6 +33,13 @@ dependencies {
 
 
 
+
+
+
+    // Borrowed from here: https://github.com/GoogleCloudPlatform/appengine-endpoints-helloendpoints-android/blob/master/HelloEndpointsProject/HelloEndpoints/build.gradle
+    // Because studio didn't want to use the included libs.
+
+
     // The following lines implement maven imports as defined at:
     // https://code.google.com/p/google-api-java-client/wiki/Setup
  
