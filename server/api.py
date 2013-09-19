@@ -7,6 +7,7 @@ CLIENT_ID = 'live-music-archive'
 
 @endpoints.api(name='music', version='v1',
                description='Live Music Archive API',
+               package_path='com/micronixsolutions/api',
                allowed_client_ids=[CLIENT_ID, endpoints.API_EXPLORER_CLIENT_ID])
 class Music(remote.Service):
     '''Defines the music api v1'''
