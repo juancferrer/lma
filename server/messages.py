@@ -1,7 +1,8 @@
 from protorpc import messages
 
-class ArtistRequest(messages.Message):
-    name = messages.StringField(1, required=False)
+class ArtistsRequest(messages.Message):
+    next_page = messages.StringField(1, required=False)
+    name = messages.StringField(2, required=False)
 
 
 class ArtistResponse(messages.Message):
@@ -10,4 +11,5 @@ class ArtistResponse(messages.Message):
 
 
 class ArtistsResponse(messages.Message):
-   artists = messages.MessageField(ArtistResponse, 1, repeated=True) 
+   next_page = messages.StringField(1, required=False)
+   artists = messages.MessageField(ArtistResponse, 2, repeated=True) 
