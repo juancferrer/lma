@@ -25,11 +25,12 @@ import java.util.List;
 /**
  * Created by juan on 9/18/13.
  */
-public class ArtistsGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<MessagesArtistResponse>>{
+public class ArtistsGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<MessagesArtistsResponse>, EndlessScrollCallback{
 
     ArtistGridAdapter mAdapter;
     GridView mGridView;
     ProgressBar mProgressBar;
+    String mNextPage;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class ArtistsGridFragment extends Fragment implements LoaderManager.Loade
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView  = inflater.inflate(R.layout.artists_grid, container, false);
         mGridView = (GridView) rootView.findViewById(R.id.artists_grid_view);
+        mGridView.setOnScrollListener(new EndlessScrollListener(this, 100));
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.artists_grid_progress_bar);
         return rootView;
     }
@@ -61,37 +63,49 @@ public class ArtistsGridFragment extends Fragment implements LoaderManager.Loade
 
     // Loader Stuff
     @Override
-    public Loader<List<MessagesArtistResponse>> onCreateLoader(int i, Bundle bundle) {
-        return new QueryArtistsLoader(getActivity());
+    public Loader<MessagesArtistsResponse> onCreateLoader(int i, Bundle bundle) {
+        String nextPage = null;
+        if(bundle != null){
+            nextPage = bundle.getString("nextPage", null);
+        }
+        return new QueryArtistsLoader(getActivity(), nextPage);
     }
 
 
     @Override
-    public void onLoadFinished(Loader<List<MessagesArtistResponse>> loader, List<MessagesArtistResponse> data) {
-        mAdapter.setData(data);
-        //mAdapter.notifyDataSetChanged();
+    public void onLoadFinished(Loader<MessagesArtistsResponse> loader, MessagesArtistsResponse data) {
+        mAdapter.setData(data.getArtists());
+        mNextPage = data.getNextPage();
+        int currPostion = mGridView.getFirstVisiblePosition();
         mGridView.setAdapter(mAdapter);
-        //mGridView.invalidateViews();
+        mGridView.setSelection(currPostion); //When updating adapter, it wants to scroll to top
         mProgressBar.setVisibility(View.INVISIBLE);
     }
 
     @Override
-    public void onLoaderReset(Loader<List<MessagesArtistResponse>> loader) {
+    public void onLoaderReset(Loader<MessagesArtistsResponse> loader) {
         mAdapter.setData(null);
     }
 
 
+    @Override
+    public void endOfListReached() {
+        // When the end of the list is reached, load the new data
+        Bundle bundle = new Bundle();
+        bundle.putString("nextPage", mNextPage);
+        getLoaderManager().restartLoader(0, bundle, this);
+    }
 
+    public static class QueryArtistsLoader extends AsyncTaskLoader<MessagesArtistsResponse>{
+        MessagesArtistsResponse mArtists;
+        Music mApi;
+        String mNextPage;
 
-
-
-    public static class QueryArtistsLoader extends AsyncTaskLoader<List<MessagesArtistResponse>>{
-        final Context mContext;
-        List<MessagesArtistResponse> mArtists;
-
-        public QueryArtistsLoader(Context context) {
+        public QueryArtistsLoader(Context context, String nextPage) {
             super(context);
-            mContext = context;
+            mNextPage = nextPage;
+            Music.Builder builder = new Music.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), null);
+            mApi = builder.build();
         }
 
         @Override
@@ -112,25 +126,30 @@ public class ArtistsGridFragment extends Fragment implements LoaderManager.Loade
         }
 
         @Override
-        public void onCanceled(List<MessagesArtistResponse> data) {
+        public void onCanceled(MessagesArtistsResponse data) {
             super.onCanceled(data);
         }
 
         @Override
-        public List<MessagesArtistResponse> loadInBackground() {
-            Music.Builder builder = new Music.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), null);
-            Music mApi = builder.build();
+        public MessagesArtistsResponse loadInBackground() {
             MessagesArtistsResponse artists = null;
             try{
-                artists = mApi.music().artists().execute();
+                if(mNextPage == null){
+                    artists = mApi.music().artists().execute();
+                }
+                else{
+                    artists = mApi.music().artists().setNextPage(mNextPage).execute();
+                }
             } catch (IOException e){
                 Log.d("ARTISTGRID", e.getMessage(), e);
             }
-            return artists.getArtists();
+            mNextPage = artists.getNextPage();
+            Log.d("AAAAAAAAA", mNextPage.toString());
+            return artists;
         }
 
         @Override
-        public void deliverResult(List<MessagesArtistResponse> data) {
+        public void deliverResult(MessagesArtistsResponse data) {
             super.deliverResult(data);
         }
     }

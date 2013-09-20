@@ -31,7 +31,6 @@ public class ArtistGridAdapter extends ArrayAdapter<MessagesArtistResponse> {
     }
 
     public void setData (List<MessagesArtistResponse> data){
-        clear();
         if(data != null){
             addAll(data);
         }
