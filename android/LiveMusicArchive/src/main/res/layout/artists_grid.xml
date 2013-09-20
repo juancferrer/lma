@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    <GridView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:columnWidth="@dimen/grid_column_width"
@@ -16,5 +15,13 @@
         android:fastScrollAlwaysVisible="true"
         android:background="@color/drawer_activated_color"
         android:fastScrollEnabled="true" />
+
+    <ProgressBar
+        android:id="@+id/artists_grid_progress_bar"
+        style="@android:style/Widget.ProgressBar.Large"
+        android:indeterminate="true"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </FrameLayout>

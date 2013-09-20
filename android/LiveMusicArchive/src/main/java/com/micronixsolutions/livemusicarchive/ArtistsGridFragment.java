@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.json.gson.GsonFactory;
@@ -28,6 +29,7 @@ public class ArtistsGridFragment extends Fragment implements LoaderManager.Loade
 
     ArtistGridAdapter mAdapter;
     GridView mGridView;
+    ProgressBar mProgressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,7 @@ public class ArtistsGridFragment extends Fragment implements LoaderManager.Loade
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView  = inflater.inflate(R.layout.artists_grid, container, false);
         mGridView = (GridView) rootView.findViewById(R.id.artists_grid_view);
-        mGridView.setAdapter(mAdapter);
+        mProgressBar = (ProgressBar) rootView.findViewById(R.id.artists_grid_progress_bar);
         return rootView;
     }
 
@@ -63,11 +65,14 @@ public class ArtistsGridFragment extends Fragment implements LoaderManager.Loade
         return new QueryArtistsLoader(getActivity());
     }
 
+
     @Override
     public void onLoadFinished(Loader<List<MessagesArtistResponse>> loader, List<MessagesArtistResponse> data) {
         mAdapter.setData(data);
-        mAdapter.notifyDataSetChanged();
-        mGridView.invalidateViews();
+        //mAdapter.notifyDataSetChanged();
+        mGridView.setAdapter(mAdapter);
+        //mGridView.invalidateViews();
+        mProgressBar.setVisibility(View.INVISIBLE);
     }
 
     @Override
