@@ -25,9 +25,9 @@ class Music(remote.Service):
             return ArtistsResponse(artists=cache[0], next_page=cache[1])
         query = Artist.query()
         if next_page is 'first_artists_page':
-            artists, cursor, more = query.fetch_page(30) 
+            artists, cursor, more = query.fetch_page(300) 
         else:
-            artists, cursor, more = query.fetch_page(30, 
+            artists, cursor, more = query.fetch_page(300, 
                     start_cursor=Cursor.from_websafe_string(next_page))
         artists = [artist.to_message() for artist in artists]
         memcache.add(next_page, (artists, cursor.to_websafe_string()))
