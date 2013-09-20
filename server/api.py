@@ -1,4 +1,5 @@
 from google.appengine.ext import endpoints
+from google.appengine.api import memcache
 from protorpc import remote
 from models import Artist
 from messages import ArtistRequest, ArtistsResponse
@@ -17,5 +18,10 @@ class Music(remote.Service):
                       name='music.artists')
     def artists(self, request):
         '''API endpoint to query for artists'''
-        artists = [artist.to_message() for artist in Artist.query().order(+Artist.key)]
-        return ArtistsResponse(artists=artists)
+        cache = memcache.get('all_artists')
+        if not cache:
+            artists = Artist.query().order(+Artist.key)
+            artists = [artist.to_message() for artist in artists]
+            memcache.add('all_artists', artists)
+            return ArtistsResponse(artists=artists)
+        return ArtistsResponse(artists=cache)
