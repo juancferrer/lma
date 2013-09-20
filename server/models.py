@@ -15,7 +15,7 @@ class Artist(ndb.Model):
     show_count = ndb.IntegerProperty(required=True)
 
     def _pre_put_hook(self,):
-        self.key = ndb.Key(self.__class__, slugify(unicode(self.name)))
+        self.key = ndb.Key(self.__class__, slugify(self.name))
 
     def to_message(self,):
         return ArtistResponse(name=self.name, show_count=self.show_count)

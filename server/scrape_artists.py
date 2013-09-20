@@ -6,7 +6,6 @@ from google.appengine.api import taskqueue
 from google.appengine.api import memcache
 from google.appengine.api import urlfetch
 from google.appengine.ext import deferred
-
 from BeautifulSoup import BeautifulSoup
 from models import Artist
 
@@ -19,11 +18,11 @@ def fetch_data():
     result = urlfetch.fetch(ARTISTS_URL)
     if result.status_code != 200:
         return
-    soup = BeautifulSoup(unicode(result.content))
+    soup = BeautifulSoup(result.content.decode('utf-8'))
     artists_table = soup.find(id='browse')
     items = artists_table.findAll('a')
     for i in range(len(items)-1)[::2]:
-        name = items[i].string.encode('utf-8')
+        name = items[i].contents[0]
         shows = int(items[i+1].string.split(' ')[0].replace(',','').encode('utf-8'))
         artist = Artist(name=name, show_count=shows)
         artist.put()
