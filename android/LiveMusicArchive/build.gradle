@@ -29,12 +29,16 @@ dependencies {
 	compile 'com.android.support:appcompat-v7:18.0.0'
     compile 'com.google.android.gms:play-services:3.2.25'
     compile project(':libraries:PagerSlidingTabStrip:library')
+    compile files('libraries/MusicApi/libs/google-http-client-android-1.17.0-rc.jar')
+    //compile fileTree(dir:'libraries/MusicApi/libs', include:'*.jar')
 
 
 
 
 
 
+
+    compile('com.google.http-client:google-http-client-gson:1.17.0-rc')
 
     // Borrowed from here: https://github.com/GoogleCloudPlatform/appengine-endpoints-helloendpoints-android/blob/master/HelloEndpointsProject/HelloEndpoints/build.gradle
     // Because studio didn't want to use the included libs.
