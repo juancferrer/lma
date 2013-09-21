@@ -3,10 +3,10 @@ package com.micronixsolutions.livemusicarchive;
 import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.NavUtils;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,58 +16,39 @@ import android.widget.SearchView;
 /**
  * Created by juan on 9/20/13.
  */
-public class SearchActivity extends FragmentActivity {
+public class SearchActivity extends FragmentActivity implements SearchView.OnQueryTextListener{
+    private SearchView mSearchView;
+    private String mLastSearchString;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        handleIntent(getIntent());
         setContentView(R.layout.search_activity);
+        setTitle(""); // Hide the title
 
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-    }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        handleIntent(intent);
-    }
-
-    private void handleIntent(Intent intent) {
-
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            //use the query to search your data somehow
-        }
+        Fragment fragment = new SearchResultFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.search_result_layout, fragment).commit();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.search, menu);
-        final SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchView.clearFocus();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-        searchView.setIconifiedByDefault(false);
-        searchView.setQueryHint(getResources().getString(R.string.search_lma));
-        searchView.onActionViewExpanded();
+        mSearchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        mSearchView.setOnQueryTextListener(this);
+        mSearchView.setIconifiedByDefault(false);
+        mSearchView.setQueryHint(getResources().getString(R.string.search_lma));
+        mSearchView.onActionViewExpanded();
 
         // Associate searchable configuration with the SearchView
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView.setSearchableInfo(
+        mSearchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -81,5 +62,27 @@ public class SearchActivity extends FragmentActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        mSearchView.clearFocus();
+        if(!query.equals(mLastSearchString)){
+            doSearch(query);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if(newText.length() > 1){
+            doSearch(newText);
+        }
+        return false;
+    }
+
+    public void doSearch(String queryString){
+        Log.d("AAAAAAAA", queryString);
+        mLastSearchString = queryString;
     }
 }
