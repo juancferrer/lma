@@ -1,6 +1,9 @@
 package com.micronixsolutions.livemusicarchive;
 
 import android.app.ActionBar;
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -8,11 +11,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 public class LiveMusicArchive extends FragmentActivity {
 
@@ -88,6 +94,17 @@ public class LiveMusicArchive extends FragmentActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.library, menu);
+        // Add the searchable conf to the searchview
+        //SearchView searchView = (SearchView) menu.findItem(R.id.music_search).getActionView();
+        //searchView.setIconified(false);
+        //searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Pass the event to ActionBarDrawerToggle, if it returns
         // true, then it has handled the app icon touch event
@@ -95,7 +112,14 @@ public class LiveMusicArchive extends FragmentActivity {
             return true;
         }
         // Handle your other action bar items...
-
+        switch (item.getItemId()){
+            case R.id.music_search:
+                Intent intent = new Intent(this, SearchActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 

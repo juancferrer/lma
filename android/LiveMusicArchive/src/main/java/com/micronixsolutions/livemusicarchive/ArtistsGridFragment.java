@@ -143,8 +143,9 @@ public class ArtistsGridFragment extends Fragment implements LoaderManager.Loade
             } catch (IOException e){
                 Log.d("ARTISTGRID", e.getMessage(), e);
             }
-            mNextPage = artists.getNextPage();
-            Log.d("AAAAAAAAA", mNextPage.toString());
+            if(artists != null){
+                mNextPage = artists.getNextPage();
+            }
             return artists;
         }
 

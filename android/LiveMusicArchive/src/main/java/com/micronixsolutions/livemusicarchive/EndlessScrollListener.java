@@ -3,6 +3,7 @@ package com.micronixsolutions.livemusicarchive;
 import android.widget.AbsListView;
 
 /**
+ * Borrowed from here: http://benjii.me/2010/08/endless-scrolling-listview-in-android/
  * Created by juan on 9/20/13.
  */
 public class EndlessScrollListener implements AbsListView.OnScrollListener, EndlessScrollCallback {
