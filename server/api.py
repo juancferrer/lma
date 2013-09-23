@@ -1,9 +1,10 @@
-from google.appengine.ext import endpoints
+from google.appengine.ext import endpoints, ndb
 from google.appengine.api import memcache
 from google.appengine.datastore.datastore_query import Cursor
 from protorpc import remote
 from models import Artist
-from messages import ArtistsRequest, ArtistsResponse
+from messages import (ArtistsRequest, ArtistsResponse,
+                      SearchRequest, SearchResponse,)
 
 CLIENT_ID = 'live-music-archive'
 
@@ -32,3 +33,31 @@ class Music(remote.Service):
         artists = [artist.to_message() for artist in artists]
         memcache.add(next_page, (artists, cursor.to_websafe_string()))
         return ArtistsResponse(artists=artists, next_page=cursor.to_websafe_string())
+
+
+    @endpoints.method(SearchRequest, SearchResponse,
+                      path='search', http_method='GET',
+                      name='search.all')
+    @ndb.synctasklet
+    def search_all(self, request):
+        '''API endpoint to search for everything'''
+        query_bits = request.query.split(' ')
+        artists = yield self.create_search_query(Artist, Artist.search_fields, query_bits)
+        #shows_query = Shows.query()
+        #songs_query = Songs.query()
+        artists = [artist.to_message() for artist in artists]
+        raise ndb.Return(SearchResponse(artists=artists))
+
+    @ndb.tasklet
+    def create_search_query(self, klass, attr, bits):
+        '''Helper method to create query objects that do string
+        comparison'''
+        futures = []
+        for bit in bits:
+            futures.append(klass.query(ndb.AND(attr >= bit, attr < bit+u'\ufffd')).fetch_async())
+            
+        results = []
+        for future in futures:
+            results.append(set(future.get_result()))
+        raise ndb.Return(set.intersection(*results))
+
