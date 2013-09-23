@@ -5,8 +5,8 @@ api_version: 1
 threadsafe: true
 
 handlers:
-- url: /task/scrape/artist/
-  script: scrape_artists.app
+- url: /task/.*
+  script: tasks.app
   login: admin
 
 - url: /_ah/spi/.*
