@@ -19,7 +19,7 @@
 package com.micronixsolutions.api.music.model;
 
 /**
- * Model definition for MessagesArtistsResponse.
+ * Model definition for MessagesSearchResponse.
  *
  * <p> This is the Java data model class that specifies how to parse/serialize into the JSON that is
  * transmitted over HTTP when working with the music. For a detailed explanation see:
@@ -29,7 +29,7 @@ package com.micronixsolutions.api.music.model;
  * @author Google, Inc.
  */
 @SuppressWarnings("javadoc")
-public final class MessagesArtistsResponse extends com.google.api.client.json.GenericJson {
+public final class MessagesSearchResponse extends com.google.api.client.json.GenericJson {
 
   /**
    * The value may be {@code null}.
@@ -44,12 +44,6 @@ public final class MessagesArtistsResponse extends com.google.api.client.json.Ge
   }
 
   /**
-   * The value may be {@code null}.
-   */
-  @com.google.api.client.util.Key("next_page")
-  private java.lang.String nextPage;
-
-  /**
    * @return value or {@code null} for none
    */
   public java.util.List<MessagesArtistResponse> getArtists() {
@@ -59,34 +53,19 @@ public final class MessagesArtistsResponse extends com.google.api.client.json.Ge
   /**
    * @param artists artists or {@code null} for none
    */
-  public MessagesArtistsResponse setArtists(java.util.List<MessagesArtistResponse> artists) {
+  public MessagesSearchResponse setArtists(java.util.List<MessagesArtistResponse> artists) {
     this.artists = artists;
     return this;
   }
 
-  /**
-   * @return value or {@code null} for none
-   */
-  public java.lang.String getNextPage() {
-    return nextPage;
-  }
-
-  /**
-   * @param nextPage nextPage or {@code null} for none
-   */
-  public MessagesArtistsResponse setNextPage(java.lang.String nextPage) {
-    this.nextPage = nextPage;
-    return this;
+  @Override
+  public MessagesSearchResponse set(String fieldName, Object value) {
+    return (MessagesSearchResponse) super.set(fieldName, value);
   }
 
   @Override
-  public MessagesArtistsResponse set(String fieldName, Object value) {
-    return (MessagesArtistsResponse) super.set(fieldName, value);
-  }
-
-  @Override
-  public MessagesArtistsResponse clone() {
-    return (MessagesArtistsResponse) super.clone();
+  public MessagesSearchResponse clone() {
+    return (MessagesSearchResponse) super.clone();
   }
 
 }
