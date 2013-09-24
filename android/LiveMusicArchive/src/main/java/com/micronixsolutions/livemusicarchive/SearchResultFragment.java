@@ -1,5 +1,6 @@
 package com.micronixsolutions.livemusicarchive;
 
+import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.AsyncTaskLoader;
@@ -7,9 +8,12 @@ import android.content.Context;
 import android.content.Loader;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -18,9 +22,11 @@ import android.widget.TextView;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.json.gson.GsonFactory;
 import com.micronixsolutions.api.music.Music;
+import com.micronixsolutions.api.music.model.MessagesArtistResponse;
 import com.micronixsolutions.api.music.model.MessagesSearchResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by juan on 9/21/13.
@@ -71,20 +77,47 @@ public class SearchResultFragment extends Fragment implements LoaderManager.Load
 
 
     public void updateSearchResults(MessagesSearchResponse response){
+        LinearLayout lm = (LinearLayout) mRootContainer.getChildAt(0);
+        View artistView = createResultItemView(response.getArtists(), "Artists");
+        //View showsView = createResultItemView(response);
+        //View songsView = createResultItemView(response);
+        lm.removeAllViews();
+        if(artistView != null){
+            lm.addView(artistView);
+        }
+    }
+
+    public View createResultItemView(List data, String title){
+        if(data == null){
+            return null;
+        }
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View view = inflater.inflate(R.layout.search_result_item, null);
         TextView text = (TextView) view.findViewById(R.id.title);
-        text.setText("Artists");
+        text.setText(title);
         TextView more = (TextView) view.findViewById(R.id.more);
-        more.setText(response.getArtists().size() + " more");
+        more.setText(data.size() + " more");
         GridView grid = (GridView) view.findViewById(R.id.grid_view);
         ArtistGridAdapter adapter = new ArtistGridAdapter(getActivity());
-        adapter.setData(response.getArtists().subList(0, 4));
+        if(data.size() <= 4){
+            adapter.setData(data.subList(0, data.size()));
+        }
+        else{
+            adapter.setData(data.subList(0, 4));
+        }
         grid.setAdapter(adapter);
-        LinearLayout lm = (LinearLayout) mRootContainer.getChildAt(0);
-        lm.removeAllViews();
-        lm.addView(view);
-    }
+        if(data.size() > 2){
+            View row = adapter.getView(0, null, grid);
+            row.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+            ViewGroup.LayoutParams lp = grid.getLayoutParams();
+            //lp.height = row.getMeasuredHeight() * 4;
+            int pixels = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, row.getMeasuredHeight(), getResources().getDisplayMetrics()) * 3;
+            lp.height = pixels;
+            grid.setLayoutParams(lp);
+        }
+        return view;
+     }
 
     public void doSearch(String query){
         Log.d("AAAAAAAAAAAAAAA", query);
