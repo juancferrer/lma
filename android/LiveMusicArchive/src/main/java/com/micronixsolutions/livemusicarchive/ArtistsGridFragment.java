@@ -74,8 +74,10 @@ public class ArtistsGridFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onLoadFinished(Loader<MessagesArtistsResponse> loader, MessagesArtistsResponse data) {
-        mAdapter.setData(data.getArtists());
-        mNextPage = data.getNextPage();
+        if(data != null){
+            mAdapter.setData(data.getArtists());
+            mNextPage = data.getNextPage();
+        }
         int currPostion = mGridView.getFirstVisiblePosition();
         mGridView.setAdapter(mAdapter);
         mGridView.setSelection(currPostion); //When updating adapter, it wants to scroll to top
@@ -147,11 +149,6 @@ public class ArtistsGridFragment extends Fragment implements LoaderManager.Loade
                 mNextPage = artists.getNextPage();
             }
             return artists;
-        }
-
-        @Override
-        public void deliverResult(MessagesArtistsResponse data) {
-            super.deliverResult(data);
         }
     }
 }

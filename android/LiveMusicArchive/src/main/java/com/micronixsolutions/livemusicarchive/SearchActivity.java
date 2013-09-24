@@ -1,24 +1,30 @@
 package com.micronixsolutions.livemusicarchive;
 
 import android.app.ActionBar;
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.app.SearchManager;
+import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SearchView;
 
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.json.gson.GsonFactory;
+import com.micronixsolutions.api.music.Music;
+import com.micronixsolutions.api.music.model.MessagesSearchResponse;
+
 /**
  * Created by juan on 9/20/13.
  */
-public class SearchActivity extends FragmentActivity implements SearchView.OnQueryTextListener{
+public class SearchActivity extends Activity implements SearchView.OnQueryTextListener {
     private SearchView mSearchView;
     private String mLastSearchString;
+    private SearchResultFragment mSearchFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,9 +35,10 @@ public class SearchActivity extends FragmentActivity implements SearchView.OnQue
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        Fragment fragment = new SearchResultFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.search_result_layout, fragment).commit();
+        mSearchFragment = new SearchResultFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.search_result_layout, mSearchFragment).commit();
+
     }
 
     @Override
@@ -68,21 +75,17 @@ public class SearchActivity extends FragmentActivity implements SearchView.OnQue
     public boolean onQueryTextSubmit(String query) {
         mSearchView.clearFocus();
         if(!query.equals(mLastSearchString)){
-            doSearch(query);
+            mSearchFragment.doSearch(query);
         }
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if(newText.length() > 1){
-            doSearch(newText);
+        if(newText.length() > 1 && !Character.isWhitespace(newText.charAt(newText.length()-1))){
+            mSearchFragment.doSearch(newText);
         }
+        mLastSearchString = newText;
         return false;
-    }
-
-    public void doSearch(String queryString){
-        Log.d("AAAAAAAA", queryString);
-        mLastSearchString = queryString;
     }
 }
