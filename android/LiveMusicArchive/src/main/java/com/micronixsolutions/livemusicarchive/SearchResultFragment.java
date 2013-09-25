@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -78,6 +79,7 @@ public class SearchResultFragment extends Fragment implements LoaderManager.Load
 
     public void updateSearchResults(MessagesSearchResponse response){
         LinearLayout lm = (LinearLayout) mRootContainer.getChildAt(0);
+        //FrameLayout lm = (FrameLayout) mRootContainer;
         View artistView = createResultItemView(response.getArtists(), "Artists");
         //View showsView = createResultItemView(response);
         //View songsView = createResultItemView(response);
@@ -106,34 +108,14 @@ public class SearchResultFragment extends Fragment implements LoaderManager.Load
             adapter.setData(data.subList(0, 4));
         }
         grid.setAdapter(adapter);
-        if(data.size() > 2){
-            View row = adapter.getView(0, null, grid);
-            row.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-            ViewGroup.LayoutParams lp = grid.getLayoutParams();
-            //lp.height = row.getMeasuredHeight() * 4;
-            int pixels = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, row.getMeasuredHeight(), getResources().getDisplayMetrics()) * 3;
-            lp.height = pixels;
-            grid.setLayoutParams(lp);
-        }
         return view;
      }
 
     public void doSearch(String query){
-        Log.d("AAAAAAAAAAAAAAA", query);
         mProgressBar.setVisibility(View.VISIBLE);
         LoaderManager lm = getLoaderManager();
         Bundle bundle = new Bundle();
         bundle.putString("query", query);
-        /*
-        if(lm.hasRunningLoaders()){
-            //lm.destroyLoader(0);
-            lm.restartLoader(0, bundle, this);
-        }
-        else {
-            lm.initLoader(0, bundle, this);
-        }
-        */
         lm.destroyLoader(0);
         lm.initLoader(0, bundle, this);
     }
