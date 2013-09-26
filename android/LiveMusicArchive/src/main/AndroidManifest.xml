@@ -32,6 +32,9 @@
         <activity
             android:name=".SearchActivity"
             android:label="@string/search_lma">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".LiveMusicArchive" />
         </activity>
     </application>
 </manifest>

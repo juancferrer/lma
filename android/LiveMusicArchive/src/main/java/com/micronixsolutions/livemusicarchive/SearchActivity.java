@@ -7,6 +7,7 @@ import android.app.SearchManager;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -63,7 +64,7 @@ public class SearchActivity extends Activity implements SearchView.OnQueryTextLi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case(android.R.id.home):
-                finish(); // Kill this activity, and go back
+                NavUtils.navigateUpFromSameTask(this);
                 break;
             default:
                 break;
