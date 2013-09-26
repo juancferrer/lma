@@ -2,9 +2,9 @@ from google.appengine.ext import endpoints, ndb
 from google.appengine.api import memcache
 from google.appengine.datastore.datastore_query import Cursor
 from protorpc import remote
-from models import Artist
+from models import Artist, ShowRecording
 from messages import (ArtistsRequest, ArtistsResponse,
-                      SearchRequest, SearchResponse,)
+                      SearchRequest, SearchResponse, ShowRecordingResponse)
 
 CLIENT_ID = 'live-music-archive'
 
@@ -43,10 +43,11 @@ class Music(remote.Service):
         '''API endpoint to search for everything'''
         query_bits = request.query.split(' ')
         artists = yield self.create_search_query(Artist, Artist.search_fields, query_bits)
-        #shows_query = Shows.query()
+        shows = yield self.create_search_query(ShowRecording, ShowRecording.search_fields, query_bits)
         #songs_query = Songs.query()
         artists = [artist.to_message() for artist in artists]
-        raise ndb.Return(SearchResponse(artists=artists))
+        shows = [show.to_message() for show in shows]
+        raise ndb.Return(SearchResponse(artists=artists, shows=shows))
 
     @ndb.tasklet
     def create_search_query(self, klass, attr, bits):
