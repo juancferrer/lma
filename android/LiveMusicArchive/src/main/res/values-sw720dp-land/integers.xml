@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="integer" name="search_result_num_columns" format="integer">5</item>
+    <item type="integer" name="search_result_num_results" format="integer">10</item>
+</resources>

@@ -4,6 +4,8 @@
       <root url="jar://$PROJECT_DIR$/libraries/MusicApi/libs/google-http-client-gson-1.17.0-rc.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/libraries/MusicApi/libs-sources/google-http-client-gson-1.17.0-rc-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>

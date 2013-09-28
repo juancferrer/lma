@@ -11,7 +11,7 @@
         android:id="@+id/artists_grid_view"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:numColumns="auto_fit"
+        android:numColumns="@integer/search_result_num_columns"
         android:fastScrollAlwaysVisible="true"
         android:background="@color/drawer_activated_color"
         android:fastScrollEnabled="true" />
