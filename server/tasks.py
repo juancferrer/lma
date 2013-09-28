@@ -28,8 +28,7 @@ def fetch_artist():
         identifier = items[i].get('href').split('/')[-1]
         shows = int(items[i+1].string.split(' ')[0].replace(',','').encode('utf-8'))
         artist = Artist(name=name, show_count=shows, identifier=identifier)
-        print artist
-        artist.put()
+        artist.put_async()
 
 
 class ScrapeArtist(webapp2.RequestHandler):
@@ -38,8 +37,8 @@ class ScrapeArtist(webapp2.RequestHandler):
         deferred.defer(fetch_artist,)
 
 def resave():
-    for artist in Artist.query().iter():
-        artist.put()
+    for show in ShowRecording.query().iter():
+        show.put_async()
 
 class Resave(webapp2.RequestHandler):
     def get(self,):
@@ -61,7 +60,7 @@ def fetch_shows(artist, next_page=1):
                 coverage=doc.get('coverage',[]),
                 subject=doc.get('subject',[]),
                 date=datetime.datetime.strptime(doc.get('date', '1500-01-01T00:00:00Z'), '%Y-%m-%dT%H:%M:%SZ'))
-        show.put()
+        show.put_async()
     if next_page==1:
         count = int(data['response']['numFound'])
         if count > 50:
@@ -77,7 +76,7 @@ class ScrapeShows(webapp2.RequestHandler):
         deferred.defer(begin_fetch_shows)
 
 app = webapp2.WSGIApplication([
-    #('/.*', Resave),
-    ('/.*', ScrapeShows),
+    ('/.*', Resave),
+    #('/.*', ScrapeShows),
     ],
      debug=True)

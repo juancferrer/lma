@@ -20,7 +20,7 @@ class ShowRecordingResponse(messages.Message):
     title = messages.StringField(2, required=True)
     identifier = messages.StringField(3, required=True)
     description = messages.StringField(4)
-    date = message_types.DateTimeField(5)
+    date = messages.StringField(5)
     source = messages.StringField(6)
     downloads = messages.IntegerField(7)
     coverage = messages.StringField(8, repeated=True)

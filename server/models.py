@@ -39,7 +39,7 @@ class ShowRecording(ndb.Model):
     title = ndb.StringProperty(required=True)
     identifier = ndb.StringProperty(required=True)
     description = ndb.StringProperty(indexed=False)
-    date = ndb.DateProperty(required=True)
+    date = ndb.DateTimeProperty(required=True)
     source = ndb.StringProperty(indexed=False)
     downloads = ndb.IntegerProperty()
     coverage = ndb.StringProperty(repeated=True)
@@ -60,7 +60,7 @@ class ShowRecording(ndb.Model):
                 identifier=self.identifier, description=self.description,
                 source=self.source, downloads=self.downloads,
                 coverage=self.coverage, subject=self.subject,
-                date=datetime.datetime.combine(self.date, datetime.time.min))
+                date=self.date.isoformat())
 
     def __hash__(self,):
         m = hashlib.md5()
